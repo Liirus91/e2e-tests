@@ -1,15 +1,22 @@
-import puppeteer, { Browser, Page, LaunchOptions } from 'puppeteer';
+import puppeteer, { Browser, Page } from 'puppeteer';
 
 let browser: Browser | null = null;
 
 export async function getBrowser(): Promise<Browser> {
   if (!browser) {
-    const launchOptions: LaunchOptions = {
-      headless: true,
-      args: ['--no-sandbox', '--disable-setuid-sandbox'],
-    };
-    browser = await puppeteer.launch(launchOptions);
+    browser = await puppeteer.launch({
+      headless: process.env.HEADLESS !== 'false',
+      args: [
+        '--no-sandbox',
+        '--disable-setuid-sandbox',
+        '--window-size=1920,1080',
+      ],
+      slowMo: process.env.SLOWMO ? parseInt(process.env.SLOWMO) : 0,
+      defaultViewport:
+        process.env.HEADLESS === 'false' ? { width: 1920, height: 1080 } : null,
+    });
   }
+
   return browser;
 }
 
