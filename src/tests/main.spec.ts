@@ -1,6 +1,7 @@
 import { newPage, closeBrowser } from '../utils/browser';
 import { MainPage } from '../pages/MainPage';
 import { Page } from 'puppeteer';
+import { isElementVisible } from '../utils/pageHelpers';
 
 let page: Page;
 
@@ -14,10 +15,12 @@ afterAll(async () => {
 });
 
 describe('Main tests', () => {
-  test('banner image has non-empty alt text', async () => {
+  test('Main page have logo, nav menu and footer', async () => {
     const main = new MainPage(page);
     await main.goto();
 
-    expect(page.url()).toBe('https://demoqa.com/');
+    expect(await isElementVisible(page, 'header a')).toBe(true);
+    expect(await isElementVisible(page, '.category-cards')).toBe(true);
+    expect(await isElementVisible(page, 'footer span')).toBe(true);
   });
 });
