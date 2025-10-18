@@ -5,7 +5,7 @@
   "scripts": {
     "build": "tsc",
     "test": "jest --runInBand",
-    "test:show": "cross-env HEADLESS=false SLOWMO=100 npx jest",
+    "test:show": "cross-env HEADLESS=false SLOWMO=25 npx jest",
     "test:debug": "node --inspect-brk ./node_modules/jest/bin/jest.js --runInBand",
     "allure:generate": "allure generate allure-results --clean -o allure-report",
     "allure:open": "allure open allure-report",
