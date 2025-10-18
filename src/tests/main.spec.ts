@@ -1,6 +1,7 @@
 import { newPage, closeBrowser } from '../utils/browser';
 import { MainPage } from '../pages/MainPage';
 import { Page } from 'puppeteer';
+import { Categories } from '../data/categories';
 
 let page: Page;
 

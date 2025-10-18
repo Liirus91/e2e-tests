@@ -1,3 +1,4 @@
+import { CategoryName } from '../data/categories';
 import { isElementVisible } from '../utils/pageHelpers';
 import { BasePage } from './BasePage';
 
@@ -8,6 +9,8 @@ export class MainPage extends BasePage {
     return {
       ...super.selectors,
       navMenu: '.category-cards',
+      categoryCards: '.category-cards .card',
+      cardTitle: '.card-body h5',
     };
   }
 
@@ -19,11 +22,12 @@ export class MainPage extends BasePage {
     await this.page.waitForSelector(this.selectors.navMenu, { visible: true });
   }
 
-  async clickCategoryByName(categoryName: string) {
-    const cards = await this.page.$$('.category-cards .card');
+  async clickCategoryByName(categoryName: CategoryName) {
+    const { categoryCards, cardTitle } = this.selectors;
+    const cards = await this.page.$$(categoryCards);
 
     for (const card of cards) {
-      const titleHandle = await card.$('.card-body h5');
+      const titleHandle = await card.$(cardTitle);
       if (!titleHandle) continue;
 
       const title = await this.page.evaluate(
