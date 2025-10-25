@@ -1,3 +1,4 @@
+import { Page } from 'puppeteer';
 import { CategoryName } from '../data/categories';
 import { isElementVisible } from '../utils/pageHelpers';
 import { BasePage } from './BasePage';
@@ -22,12 +23,16 @@ export class MainPage extends BasePage {
     await this.page.waitForSelector(this.selectors.navMenu, { visible: true });
   }
 
-  async clickCategoryByName(categoryName: CategoryName) {
+  async clickCategoryByName<T extends BasePage>(
+    categoryName: CategoryName,
+    PageClass: new (page: Page) => T
+  ): Promise<T> {
     const { categoryCards, cardTitle } = this.selectors;
     const cards = await this.page.$$(categoryCards);
 
     for (const card of cards) {
       const titleHandle = await card.$(cardTitle);
+
       if (!titleHandle) continue;
 
       const title = await this.page.evaluate(
@@ -37,7 +42,7 @@ export class MainPage extends BasePage {
 
       if (title?.toLowerCase() === categoryName.toLowerCase()) {
         await card.click();
-        return;
+        return new PageClass(this.page);
       }
     }
 

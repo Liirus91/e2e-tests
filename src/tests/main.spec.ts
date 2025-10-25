@@ -1,7 +1,6 @@
 import { newPage, closeBrowser } from '../utils/browser';
 import { MainPage } from '../pages/MainPage';
 import { Page } from 'puppeteer';
-import { Categories } from '../data/categories';
 
 let page: Page;
 
@@ -14,13 +13,13 @@ afterAll(async () => {
   await closeBrowser();
 });
 
-describe('Main tests UI tests', () => {
+describe('Main UI tests', () => {
   test('Main page has visible logo, nav menu and footer', async () => {
-    const main = new MainPage(page);
-    await main.goto();
+    const mainPage = new MainPage(page);
+    await mainPage.goto();
 
-    expect(await main.isLogoVisible()).toBe(true);
-    expect(await main.isCategoriesMenuVisible()).toBe(true);
-    expect(await main.isFooterVisible()).toBe(true);
+    expect(await mainPage.isLogoVisible()).toBe(true);
+    expect(await mainPage.isCategoriesMenuVisible()).toBe(true);
+    expect(await mainPage.isFooterVisible()).toBe(true);
   });
 });
