@@ -25,6 +25,10 @@ export abstract class BasePage {
     await this.page.goto(this.url, { waitUntil: 'networkidle0' });
   }
 
+  async getCurrentUrl() {
+    return this.page.url();
+  }
+
   async clickLogo() {
     await this.page.waitForSelector(this.selectors.logo, { visible: true });
     await this.page.click(this.selectors.logo);
