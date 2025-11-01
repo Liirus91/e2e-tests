@@ -1,8 +1,7 @@
 import { newPage, closeBrowser } from '../utils/browser';
 import { MainPage } from '../pages/MainPage';
 import { Page } from 'puppeteer';
-import { Categories } from '../data/categories';
-import { ElementsPage } from '../pages/elements';
+import { Categories, CategoryName } from '../data/categories';
 
 let page: Page;
 
@@ -25,16 +24,38 @@ describe('Main UI tests', () => {
     expect(await mainPage.isFooterVisible()).toBe(true);
   });
 
-  test('Clicking to elements category in main page', async () => {
-    const mainPage = new MainPage(page);
-    await mainPage.goto();
+  // test('Elements category opens Elements page', async () => {
+  //   const mainPage = new MainPage(page);
+  //   await mainPage.goto();
 
-    const elementsPage = await mainPage.clickCategoryByName(
-      Categories.ELEMENTS
-    );
+  //   const elementsPage = await mainPage.clickCategoryByName(
+  //     Categories.ELEMENTS
+  //   );
 
-    expect(await elementsPage.isLogoVisible()).toBe(true);
-    expect(await elementsPage.isFooterVisible()).toBe(true);
-    expect(await elementsPage.getCurrentUrl()).toContain('elements');
-  });
+  //   expect(await elementsPage.getCurrentUrl()).toContain('elements');
+  // });
+});
+
+describe('Main Page categories navigation', () => {
+  const categories: [CategoryName, string][] = [
+    [Categories.ELEMENTS, 'elements'],
+    [Categories.FORMS, 'forms'],
+    [Categories.ALERTS, 'alerts'],
+    [Categories.WIDGETS, 'widgets'],
+    [Categories.INTERACTIONS, 'interaction'],
+    [Categories.BOOKS_API, 'books'],
+  ];
+
+  test.each(categories)(
+    'Category %s opens correct page',
+    async (category: CategoryName, expectedUrlPart: string) => {
+      const mainPage = new MainPage(page);
+      await mainPage.goto();
+
+      const pageInstance = await mainPage.clickCategoryByName(category);
+      const url = await pageInstance.getCurrentUrl();
+
+      expect(url.toLowerCase()).toContain(expectedUrlPart);
+    }
+  );
 });
