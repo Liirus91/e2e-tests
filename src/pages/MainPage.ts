@@ -2,7 +2,7 @@ import { Page } from 'puppeteer';
 import { CategoryName } from '../data/categories';
 import { isElementVisible } from '../utils/pageHelpers';
 import { BasePage } from './BasePage';
-import { categoryToPageMap } from './pageMap';
+import { categoryToPageMap } from '../data/pageMap';
 
 export class MainPage extends BasePage {
   protected path = '/';

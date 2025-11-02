@@ -40,4 +40,6 @@ export abstract class GroupPage extends BasePage {
 
     return names;
   }
+
+  async clickToGroupElement(name: string) {}
 }
