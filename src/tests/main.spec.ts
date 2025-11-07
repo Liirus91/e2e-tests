@@ -23,17 +23,6 @@ describe('Main UI tests', () => {
     expect(await mainPage.isCategoriesMenuVisible()).toBe(true);
     expect(await mainPage.isFooterVisible()).toBe(true);
   });
-
-  // test('Elements category opens Elements page', async () => {
-  //   const mainPage = new MainPage(page);
-  //   await mainPage.goto();
-
-  //   const elementsPage = await mainPage.clickCategoryByName(
-  //     Categories.ELEMENTS
-  //   );
-
-  //   expect(await elementsPage.getCurrentUrl()).toContain('elements');
-  // });
 });
 
 describe('Main Page categories navigation', () => {

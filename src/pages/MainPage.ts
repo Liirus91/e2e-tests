@@ -2,7 +2,8 @@ import { Page } from 'puppeteer';
 import { CategoryName } from '../data/categories';
 import { isElementVisible } from '../utils/pageHelpers';
 import { BasePage } from './BasePage';
-import { categoryToPageMap } from '../data/pageMap';
+import { categoryToPageMap } from '../data/categoryToPageMap';
+import { GroupPage } from './GroupPage';
 
 export class MainPage extends BasePage {
   protected path = '/';
@@ -24,7 +25,7 @@ export class MainPage extends BasePage {
     await this.page.waitForSelector(this.selectors.navMenu, { visible: true });
   }
 
-  async clickCategoryByName(categoryName: CategoryName): Promise<BasePage> {
+  async clickCategoryByName(categoryName: CategoryName): Promise<GroupPage> {
     const { categoryCards, cardTitle } = this.selectors;
     const cards = await this.page.$$(categoryCards);
 
