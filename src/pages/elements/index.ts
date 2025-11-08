@@ -1,6 +1,6 @@
-import { GroupPage } from '../GroupPage';
+import { ItemPage } from '../ItemPage';
 
-export class ElementsPage extends GroupPage {
+export class ElementsPage extends ItemPage {
   protected path = '/elements';
 
   protected get selectors() {

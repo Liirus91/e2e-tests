@@ -1,4 +1,5 @@
 import { CategoryName } from '../data/categories';
+import { itemToPageMap } from '../data/itemsMap';
 import { ElementsItemName, elementsItems } from '../data/itemsOfCategories';
 import { BasePage } from './BasePage';
 
@@ -59,10 +60,7 @@ export abstract class GroupPage extends BasePage {
       if (text === itemName) {
         await header.click();
 
-        //TODO: Refactor this to use a proper mapping
-        const PageClass = elementsItems[
-          itemName as keyof typeof elementsItems
-        ] as unknown as new (page: any) => BasePage;
+        const PageClass = itemToPageMap[itemName as keyof typeof itemToPageMap];
 
         if (!PageClass)
           throw new Error(`❌ Page class not found for item "${itemName}"`);
