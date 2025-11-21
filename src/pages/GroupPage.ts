@@ -1,6 +1,6 @@
 import { CategoryName } from '../data/categories';
 import { itemToPageMap } from '../data/itemsMap';
-import { ElementsItemName, elementsItems } from '../data/itemsOfCategories';
+import { ElementsItemName } from '../data/itemsOfCategories';
 import { BasePage } from './BasePage';
 
 export abstract class GroupPage extends BasePage {

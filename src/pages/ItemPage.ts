@@ -1,6 +1,6 @@
-import { GroupPage } from './GroupPage';
+import { BasePage } from './BasePage';
 
-export abstract class ItemPage extends GroupPage {
+export abstract class ItemPage extends BasePage {
   protected get selectors() {
     return {
       ...super.selectors,

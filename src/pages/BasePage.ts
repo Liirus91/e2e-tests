@@ -4,7 +4,7 @@ import { BASE_URL } from '../constants';
 export abstract class BasePage {
   protected page: PuppeteerPage;
   protected abstract path: string;
-  protected baseUrl = BASE_URL;
+  protected readonly baseUrl = BASE_URL;
 
   constructor(page: PuppeteerPage) {
     this.page = page;
@@ -22,7 +22,15 @@ export abstract class BasePage {
   }
 
   async goto() {
-    await this.page.goto(this.url, { waitUntil: 'networkidle0' });
+    await this.page.goto(this.baseUrl, {
+      waitUntil: 'networkidle0',
+    });
+  }
+
+  protected async open(path: string) {
+    await this.page.goto(`${this.baseUrl}${path}`, {
+      waitUntil: 'networkidle0',
+    });
   }
 
   async getCurrentUrl() {
