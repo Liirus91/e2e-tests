@@ -1,4 +1,3 @@
-import { Page } from 'puppeteer';
 import { CategoryName } from '../data/categories';
 import { isElementVisible } from '../utils/pageHelpers';
 import { BasePage } from './BasePage';

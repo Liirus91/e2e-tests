@@ -25,15 +25,20 @@ describe('Text box page tests', () => {
       Categories.ELEMENTS
     );
     const textBoxPage = await elementsPage.clickToItem(elementsItems.TEXT_BOX);
-    console.log(await textBoxPage.getCurrentUrl());
     const url = await textBoxPage.getCurrentUrl();
 
     expect(url.toLowerCase()).toContain('text-box');
     expect(await textBoxPage.getPageTitle()).toBe(elementsItems.TEXT_BOX);
   });
 
-  test('Test', async () => {
+  test('Fill full name', async () => {
     const textBoxPage = new TextBoxPage(page);
     await textBoxPage.goto();
+
+    const fullName = 'John Doe';
+    await textBoxPage.fillFullName(fullName);
+
+    const enteredFullName = await textBoxPage.getFullName();
+    expect(enteredFullName).toBe(fullName);
   });
 });

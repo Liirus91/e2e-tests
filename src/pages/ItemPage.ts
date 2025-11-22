@@ -1,6 +1,9 @@
 import { BasePage } from './BasePage';
 
 export abstract class ItemPage extends BasePage {
+  getInputValue(selector: string) {
+    throw new Error('Method not implemented.');
+  }
   protected get selectors() {
     return {
       ...super.selectors,
