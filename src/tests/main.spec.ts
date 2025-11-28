@@ -2,6 +2,7 @@ import { newPage, closeBrowser } from '../utils/browser';
 import { MainPage } from '../pages/MainPage';
 import { Page } from 'puppeteer';
 import { Categories, CategoryName } from '../data/categories';
+import { elementsItems } from '../data/itemsOfCategories';
 
 let page: Page;
 
@@ -22,6 +23,20 @@ describe('Main UI tests', () => {
     expect(await mainPage.isLogoVisible()).toBe(true);
     expect(await mainPage.isCategoriesMenuVisible()).toBe(true);
     expect(await mainPage.isFooterVisible()).toBe(true);
+  });
+
+  test('Link to Text box page work', async () => {
+    const mainPage = new MainPage(page);
+    await mainPage.goto();
+
+    const elementsPage = await mainPage.clickCategoryByName(
+      Categories.ELEMENTS
+    );
+    const textBoxPage = await elementsPage.clickToItem(elementsItems.TEXT_BOX);
+    const url = await textBoxPage.getCurrentUrl();
+
+    expect(url.toLowerCase()).toContain('text-box');
+    expect(await textBoxPage.getPageTitle()).toBe(elementsItems.TEXT_BOX);
   });
 });
 
