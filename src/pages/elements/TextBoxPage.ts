@@ -1,11 +1,14 @@
+import {
+  TextBoxFieldName,
+  textBoxSelectors,
+} from '../../data/submenus/elements/textBoxFields';
 import { getInputValue, typeIntoInput } from '../../utils/inputs';
 import { ItemPage } from '../ItemPage';
 
 export class TextBoxPage extends ItemPage {
   protected path = '/text-box';
-  protected nameInputSelector = '#userName';
-  protected nameOutputSelector = '#name';
-  protected submitButtonSelector = '#submit';
+
+  private submitButtonSelector = '#submit';
 
   protected get selectors() {
     return {
@@ -13,25 +16,27 @@ export class TextBoxPage extends ItemPage {
     };
   }
 
-  async fillFullName(text: string) {
-    await typeIntoInput(this.page, this.nameInputSelector, text);
+  async fillField(field: TextBoxFieldName, value: string) {
+    const selector = textBoxSelectors[field].input;
+    await typeIntoInput(this.page, selector, value);
   }
 
-  async getFullName() {
-    return await getInputValue(this.page, this.nameInputSelector);
+  async getFieldValue(field: TextBoxFieldName) {
+    const selector = textBoxSelectors[field].input;
+    return getInputValue(this.page, selector);
   }
 
   async submitForm() {
     await this.page.click(this.submitButtonSelector);
   }
 
-  async getFullNameOutput() {
-    await this.page.waitForSelector(this.nameOutputSelector, { visible: true });
-    return (
-      await this.page.$eval(
-        this.nameOutputSelector,
-        (el) => el.textContent || ''
-      )
-    ).split(':')[1];
+  async getOutputValue(field: TextBoxFieldName) {
+    const selector = textBoxSelectors[field].output;
+    await this.page.waitForSelector(selector, {
+      visible: true,
+    });
+    const text = await this.page.$eval(selector, (el) => el.textContent || '');
+
+    return text.replace(/^.*:\s*/, '').trim();
   }
 }

@@ -1,6 +1,7 @@
 import { Page } from 'puppeteer';
 import { closeBrowser, newPage } from '../../utils/browser';
 import { TextBoxPage } from '../../pages/elements/TextBoxPage';
+import { textBoxFields } from '../../data/submenus/elements/textBoxFields';
 
 let page: Page;
 let textBoxPage: TextBoxPage;
@@ -20,15 +21,18 @@ afterAll(async () => {
 });
 
 describe('Text box page tests', () => {
-  test('Should submit full name and show correct output', async () => {
-    const fullName = 'John Doe';
-    await textBoxPage.fillFullName(fullName);
+  const cases = [
+    { field: textBoxFields.fullName, value: 'John Doe' },
+    { field: textBoxFields.email, value: 'john@mail.com' },
+    { field: textBoxFields.currentAddress, value: 'Street 1' },
+    { field: textBoxFields.permanentAddress, value: 'Street 2' },
+  ];
 
-    const enteredFullName = await textBoxPage.getFullName();
-    expect(enteredFullName).toBe(fullName);
+  test.each(cases)('Submit field %s', async ({ field, value }) => {
+    await textBoxPage.fillField(field, value);
+    expect(await textBoxPage.getFieldValue(field)).toBe(value);
 
     await textBoxPage.submitForm();
-
-    expect(await textBoxPage.getFullNameOutput()).toBe(fullName);
+    expect(await textBoxPage.getOutputValue(field)).toBe(value);
   });
 });

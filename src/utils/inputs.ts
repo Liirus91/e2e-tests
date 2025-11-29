@@ -16,5 +16,8 @@ export async function typeIntoInput(
 export async function getInputValue(page: PuppeteerPage, selector: string) {
   await page.waitForSelector(selector, { visible: true });
 
-  return page.$eval(selector, (el) => (el as HTMLInputElement).value);
+  return await page.$eval(
+    selector,
+    (el) => (el as HTMLInputElement | HTMLTextAreaElement).value
+  );
 }
