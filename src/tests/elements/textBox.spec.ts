@@ -35,4 +35,11 @@ describe('Text box page tests', () => {
     await textBoxPage.submitForm();
     expect(await textBoxPage.getOutputValue(field)).toBe(value);
   });
+
+  test('Invalid email shows validation error', async () => {
+    await textBoxPage.fillField(textBoxFields.email, 'invalid-email');
+    await textBoxPage.submitForm();
+
+    expect(await textBoxPage.isInvalidEmail()).toBeTruthy();
+  });
 });

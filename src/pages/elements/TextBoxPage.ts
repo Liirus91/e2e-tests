@@ -39,4 +39,14 @@ export class TextBoxPage extends ItemPage {
 
     return text.replace(/^.*:\s*/, '').trim();
   }
+
+  async isInvalidEmail(): Promise<boolean> {
+    const emailInputSelector = textBoxSelectors.email.input;
+    const emailInputClasses = await this.page.$eval(
+      emailInputSelector,
+      (el) => el.className
+    );
+
+    return emailInputClasses.includes('field-error');
+  }
 }
