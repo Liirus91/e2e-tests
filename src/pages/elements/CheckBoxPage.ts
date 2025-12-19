@@ -3,6 +3,10 @@ import { ItemPage } from '../ItemPage';
 export class CheckBoxPage extends ItemPage {
   protected path = '/checkbox';
 
+  private treeNode = '.rct-node';
+  private nodeTitle = '.rct-title';
+  private expandButton = '.rct-collapse-btn';
+
   protected get selectors() {
     return {
       ...super.selectors,
@@ -21,5 +25,25 @@ export class CheckBoxPage extends ItemPage {
     if (collapseAllButton) {
       await collapseAllButton.click();
     }
+  }
+
+  async getBranchByName(name: string) {
+    const nodes = await this.page.$$(this.treeNode);
+
+    for (const node of nodes) {
+      const title = await node.$(this.nodeTitle);
+      if (!title) continue;
+
+      const text = await this.page.evaluate(
+        (el) => el.textContent?.trim(),
+        title
+      );
+
+      if (text === name) {
+        return node;
+      }
+    }
+
+    throw new Error(`❌ Checkbox branch "${name}" not found`);
   }
 }
