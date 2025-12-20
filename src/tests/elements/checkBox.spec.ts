@@ -2,6 +2,7 @@ import { Page } from 'puppeteer';
 import { closeBrowser, newPage } from '../../utils/browser';
 import { CheckBoxPage } from '../../pages/elements/CheckBoxPage';
 import { textBoxFields } from '../../data/submenus/elements/textBoxFields';
+import { checkBoxNames } from '../../data/submenus/elements/checkBoxNames';
 
 let page: Page;
 let checkBoxPage: CheckBoxPage;
@@ -21,5 +22,18 @@ afterAll(async () => {
 });
 
 describe('Check box page tests', () => {
-  test.skip('Expend all nodes', async () => {});
+  test('Expand all branches by button', async () => {
+    await checkBoxPage.expandAllNodes();
+
+    expect(
+      await checkBoxPage.areBranchesExpanded([
+        checkBoxNames.HOME,
+        checkBoxNames.DESKTOP,
+        checkBoxNames.DOCUMENTS,
+        checkBoxNames.WORKSPACE,
+        checkBoxNames.OFFICE,
+        checkBoxNames.DOWNLOADS,
+      ])
+    ).toBeTruthy();
+  });
 });

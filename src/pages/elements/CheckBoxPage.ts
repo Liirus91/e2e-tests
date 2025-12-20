@@ -1,3 +1,4 @@
+import { CheckBoxName } from '../../data/submenus/elements/checkBoxNames';
 import { ItemPage } from '../ItemPage';
 
 export class CheckBoxPage extends ItemPage {
@@ -5,7 +6,8 @@ export class CheckBoxPage extends ItemPage {
 
   private treeNode = '.rct-node';
   private nodeTitle = '.rct-title';
-  private expandButton = '.rct-collapse-btn';
+  private expandButton = 'button[title="Expand all"]';
+  private collapseButton = 'button[title="Collapse all"]';
 
   protected get selectors() {
     return {
@@ -14,20 +16,20 @@ export class CheckBoxPage extends ItemPage {
   }
 
   async expandAllNodes(): Promise<void> {
-    const expandAllButton = await this.page.$('button[title="Expand all"]');
+    const expandAllButton = await this.page.$(this.expandButton);
     if (expandAllButton) {
       await expandAllButton.click();
     }
   }
 
   async collapseAllNodes(): Promise<void> {
-    const collapseAllButton = await this.page.$('button[title="Collapse all"]');
+    const collapseAllButton = await this.page.$(this.collapseButton);
     if (collapseAllButton) {
       await collapseAllButton.click();
     }
   }
 
-  async getBranchByName(name: string) {
+  async getBranchByName(name: CheckBoxName) {
     const nodes = await this.page.$$(this.treeNode);
 
     for (const node of nodes) {
@@ -45,5 +47,25 @@ export class CheckBoxPage extends ItemPage {
     }
 
     throw new Error(`❌ Checkbox branch "${name}" not found`);
+  }
+
+  async isBranchExpanded(name: CheckBoxName): Promise<boolean> {
+    try {
+      const branch = await this.getBranchByName(name);
+      const expanded = await branch.evaluate((el) =>
+        el.classList.contains('rct-node-expanded')
+      );
+      return expanded;
+    } catch {
+      return false;
+    }
+  }
+
+  async areBranchesExpanded(names: CheckBoxName[]): Promise<boolean> {
+    const results = await Promise.all(
+      names.map((name) => this.isBranchExpanded(name))
+    );
+
+    return results.every(Boolean);
   }
 }

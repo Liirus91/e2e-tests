@@ -4,7 +4,7 @@ export const checkBoxNames = {
   NOTES: 'Notes',
   COMMANDS: 'Commands',
   DOCUMENTS: 'Documents',
-  WORKSPACE: 'Workspace',
+  WORKSPACE: 'WorkSpace',
   OFFICE: 'Office',
   DOWNLOADS: 'Downloads',
   WORD_FILE: 'Word File.doc',
