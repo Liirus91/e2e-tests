@@ -36,4 +36,20 @@ describe('Check box page tests', () => {
       ])
     ).toBeTruthy();
   });
+
+  test('Collapse all branches by button', async () => {
+    await checkBoxPage.expandAllNodes();
+    await checkBoxPage.collapseAllNodes();
+
+    expect(
+      await checkBoxPage.areBranchesExpanded([
+        checkBoxNames.HOME,
+        checkBoxNames.DESKTOP,
+        checkBoxNames.DOCUMENTS,
+        checkBoxNames.WORKSPACE,
+        checkBoxNames.OFFICE,
+        checkBoxNames.DOWNLOADS,
+      ])
+    ).toBeFalsy();
+  });
 });
