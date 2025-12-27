@@ -42,14 +42,18 @@ describe('Check box page tests', () => {
     await checkBoxPage.collapseAllNodes();
 
     expect(
-      await checkBoxPage.areBranchesExpanded([
-        checkBoxNames.HOME,
-        checkBoxNames.DESKTOP,
-        checkBoxNames.DOCUMENTS,
-        checkBoxNames.WORKSPACE,
-        checkBoxNames.OFFICE,
-        checkBoxNames.DOWNLOADS,
-      ])
+      await checkBoxPage.areBranchesExpanded([checkBoxNames.HOME])
+    ).toBeFalsy();
+  });
+
+  test('Expand specific branch', async () => {
+    await checkBoxPage.expandBranch(checkBoxNames.HOME);
+
+    expect(
+      await checkBoxPage.isBranchExpanded(checkBoxNames.HOME)
+    ).toBeTruthy();
+    expect(
+      await checkBoxPage.isBranchExpanded(checkBoxNames.DESKTOP)
     ).toBeFalsy();
   });
 });

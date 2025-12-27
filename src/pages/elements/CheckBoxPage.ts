@@ -61,6 +61,20 @@ export class CheckBoxPage extends ItemPage {
     }
   }
 
+  async expandBranch(name: CheckBoxName): Promise<void> {
+    const branch = await this.getBranchByName(name);
+    const expandIcon = await branch.$('.rct-collapse');
+
+    if (expandIcon) {
+      const isExpanded = await branch.evaluate((el) =>
+        el.classList.contains('rct-node-expanded')
+      );
+      if (!isExpanded) {
+        await expandIcon.click();
+      }
+    }
+  }
+
   async areBranchesExpanded(names: CheckBoxName[]): Promise<boolean> {
     const results = await Promise.all(
       names.map((name) => this.isBranchExpanded(name))
