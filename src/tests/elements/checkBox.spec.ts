@@ -22,7 +22,7 @@ afterAll(async () => {
 });
 
 describe('Check box page tests', () => {
-  test('Expand all branches by button', async () => {
+  test('Expand all branches by one button', async () => {
     await checkBoxPage.expandAllNodes();
 
     expect(
@@ -37,7 +37,7 @@ describe('Check box page tests', () => {
     ).toBeTruthy();
   });
 
-  test('Collapse all branches by button', async () => {
+  test('Collapse all branches by one button', async () => {
     await checkBoxPage.expandAllNodes();
     await checkBoxPage.collapseAllNodes();
 
@@ -55,5 +55,17 @@ describe('Check box page tests', () => {
     expect(
       await checkBoxPage.isBranchExpanded(checkBoxNames.DESKTOP)
     ).toBeFalsy();
+  });
+
+  test('Collapse specific branch', async () => {
+    await checkBoxPage.expandAllNodes();
+    await checkBoxPage.collapseBranch(checkBoxNames.DESKTOP);
+
+    expect(
+      await checkBoxPage.isBranchExpanded(checkBoxNames.DESKTOP)
+    ).toBeFalsy();
+    expect(
+      await checkBoxPage.isBranchExpanded(checkBoxNames.HOME)
+    ).toBeTruthy();
   });
 });
