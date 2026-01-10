@@ -68,4 +68,12 @@ describe('Check box page tests', () => {
       await checkBoxPage.isBranchExpanded(checkBoxNames.HOME)
     ).toBeTruthy();
   });
-});
+
+  test('Check main checkbox', async () => {
+    await checkBoxPage.toggleCheckbox(checkBoxNames.HOME);
+
+    expect(
+      await checkBoxPage.isCheckboxChecked(checkBoxNames.HOME)
+    ).toBeTruthy();
+  });
+})

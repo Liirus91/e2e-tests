@@ -8,6 +8,10 @@ export class CheckBoxPage extends ItemPage {
   private nodeTitle = '.rct-title';
   private expandButton = 'button[title="Expand all"]';
   private collapseButton = 'button[title="Collapse all"]';
+  private checkBox = '.rct-checkbox svg';
+  private checkIconClass = 'rct-icon-check';
+  private branchExpandedClass = 'rct-node-expanded';
+  private branchCollapse = 'rct-collapse';
 
   protected get selectors() {
     return {
@@ -52,8 +56,9 @@ export class CheckBoxPage extends ItemPage {
   async isBranchExpanded(name: CheckBoxName): Promise<boolean> {
     try {
       const branch = await this.getBranchByName(name);
-      const expanded = await branch.evaluate((el) =>
-        el.classList.contains('rct-node-expanded')
+      const expanded = await branch.evaluate(
+        (el, branchExpandedClass) => el.classList.contains(branchExpandedClass),
+        this.branchExpandedClass
       );
       return expanded;
     } catch {
@@ -63,11 +68,12 @@ export class CheckBoxPage extends ItemPage {
 
   async expandBranch(name: CheckBoxName): Promise<void> {
     const branch = await this.getBranchByName(name);
-    const expandIcon = await branch.$('.rct-collapse');
+    const expandIcon = await branch.$(this.branchCollapse);
 
     if (expandIcon) {
-      const isExpanded = await branch.evaluate((el) =>
-        el.classList.contains('rct-node-expanded')
+      const isExpanded = await branch.evaluate(
+        (el, branchExpandedClass) => el.classList.contains(branchExpandedClass),
+        this.branchExpandedClass
       );
       if (!isExpanded) {
         await expandIcon.click();
@@ -77,11 +83,12 @@ export class CheckBoxPage extends ItemPage {
 
   async collapseBranch(name: CheckBoxName): Promise<void> {
     const branch = await this.getBranchByName(name);
-    const collapseIcon = await branch.$('.rct-collapse');
+    const collapseIcon = await branch.$(this.branchCollapse);
 
     if (collapseIcon) {
-      const isExpanded = await branch.evaluate((el) =>
-        el.classList.contains('rct-node-expanded')
+      const isExpanded = await branch.evaluate(
+        (el, branchExpandedClass) => el.classList.contains(branchExpandedClass),
+        this.branchExpandedClass
       );
       if (isExpanded) {
         await collapseIcon.click();
@@ -95,5 +102,29 @@ export class CheckBoxPage extends ItemPage {
     );
 
     return results.every(Boolean);
+  }
+
+  async toggleCheckbox(name: CheckBoxName): Promise<void> {
+    const branch = await this.getBranchByName(name);
+    const checkbox = await branch.$(this.checkBox);
+
+    if (checkbox) {
+      await checkbox.click();
+    }
+  }
+
+  async isCheckboxChecked(name: CheckBoxName): Promise<boolean> {
+    const branch = await this.getBranchByName(name);
+    const checkbox = await branch.$(this.checkBox);
+
+    if (checkbox) {
+      const isChecked = await checkbox.evaluate(
+        (el, checkIconClass) => el.classList.contains(checkIconClass),
+        this.checkIconClass
+      );
+      return isChecked;
+    }
+
+    return false;
   }
 }
