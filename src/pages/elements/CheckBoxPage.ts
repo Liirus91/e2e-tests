@@ -1,4 +1,5 @@
 import { CheckBoxName } from '../../data/submenus/elements/checkBoxNames';
+import { capitalizeFirst } from '../../utils/pageHelpers';
 import { ItemPage } from '../ItemPage';
 
 export class CheckBoxPage extends ItemPage {
@@ -12,6 +13,7 @@ export class CheckBoxPage extends ItemPage {
   private checkIconClass = 'rct-icon-check';
   private branchExpandedClass = 'rct-node-expanded';
   private branchCollapse = 'rct-collapse';
+  private selectedResults = '#result .text-success';
 
   protected get selectors() {
     return {
@@ -126,5 +128,20 @@ export class CheckBoxPage extends ItemPage {
     }
 
     return false;
+  }
+
+  async getSelectedResults(): Promise<string[]> {
+    const resultElements = await this.page.$$(this.selectedResults);
+    const results: string[] = [];
+
+    for (const element of resultElements) {
+      const text = await this.page.evaluate(
+        (el) => el.textContent?.trim() || '',
+        element
+      );
+      results.push(capitalizeFirst(text));
+    }
+
+    return results;
   }
 }

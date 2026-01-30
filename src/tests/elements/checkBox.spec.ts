@@ -75,5 +75,13 @@ describe('Check box page tests', () => {
     expect(
       await checkBoxPage.isCheckboxChecked(checkBoxNames.HOME)
     ).toBeTruthy();
+    expect(await checkBoxPage.getSelectedResults()).toEqual(
+      expect.arrayContaining([
+        checkBoxNames.HOME,
+        checkBoxNames.DESKTOP,
+        checkBoxNames.NOTES,
+        checkBoxNames.COMMANDS,
+      ])
+    );
   });
-})
+});

@@ -21,3 +21,7 @@ export async function isElementVisible(
     return false;
   }
 }
+
+export const capitalizeFirst = (value: string) => {
+  return value.charAt(0).toUpperCase() + value.slice(1)
+};
