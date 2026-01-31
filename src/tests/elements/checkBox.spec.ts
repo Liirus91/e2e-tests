@@ -33,7 +33,7 @@ describe('Check box page tests', () => {
         checkBoxNames.WORKSPACE,
         checkBoxNames.OFFICE,
         checkBoxNames.DOWNLOADS,
-      ])
+      ]),
     ).toBeTruthy();
   });
 
@@ -42,7 +42,7 @@ describe('Check box page tests', () => {
     await checkBoxPage.collapseAllNodes();
 
     expect(
-      await checkBoxPage.areBranchesExpanded([checkBoxNames.HOME])
+      await checkBoxPage.areBranchesExpanded([checkBoxNames.HOME]),
     ).toBeFalsy();
   });
 
@@ -50,10 +50,10 @@ describe('Check box page tests', () => {
     await checkBoxPage.expandBranch(checkBoxNames.HOME);
 
     expect(
-      await checkBoxPage.isBranchExpanded(checkBoxNames.HOME)
+      await checkBoxPage.isBranchExpanded(checkBoxNames.HOME),
     ).toBeTruthy();
     expect(
-      await checkBoxPage.isBranchExpanded(checkBoxNames.DESKTOP)
+      await checkBoxPage.isBranchExpanded(checkBoxNames.DESKTOP),
     ).toBeFalsy();
   });
 
@@ -62,10 +62,10 @@ describe('Check box page tests', () => {
     await checkBoxPage.collapseBranch(checkBoxNames.DESKTOP);
 
     expect(
-      await checkBoxPage.isBranchExpanded(checkBoxNames.DESKTOP)
+      await checkBoxPage.isBranchExpanded(checkBoxNames.DESKTOP),
     ).toBeFalsy();
     expect(
-      await checkBoxPage.isBranchExpanded(checkBoxNames.HOME)
+      await checkBoxPage.isBranchExpanded(checkBoxNames.HOME),
     ).toBeTruthy();
   });
 
@@ -73,7 +73,7 @@ describe('Check box page tests', () => {
     await checkBoxPage.toggleCheckbox(checkBoxNames.HOME);
 
     expect(
-      await checkBoxPage.isCheckboxChecked(checkBoxNames.HOME)
+      await checkBoxPage.isCheckboxChecked(checkBoxNames.HOME),
     ).toBeTruthy();
     expect(await checkBoxPage.getSelectedResults()).toEqual(
       expect.arrayContaining([
@@ -81,7 +81,23 @@ describe('Check box page tests', () => {
         checkBoxNames.DESKTOP,
         checkBoxNames.NOTES,
         checkBoxNames.COMMANDS,
-      ])
+      ]),
+    );
+  });
+
+  test('Check specific checkbox in the middle of the branch', async () => {
+    await checkBoxPage.expandAllNodes();
+    await checkBoxPage.toggleCheckbox(checkBoxNames.DESKTOP);
+
+    expect(
+      await checkBoxPage.isCheckboxChecked(checkBoxNames.NOTES),
+    ).toBeTruthy();
+    expect(await checkBoxPage.getSelectedResults()).toEqual(
+      expect.arrayContaining([
+        checkBoxNames.DESKTOP,
+        checkBoxNames.NOTES,
+        checkBoxNames.COMMANDS,
+      ]),
     );
   });
 });
