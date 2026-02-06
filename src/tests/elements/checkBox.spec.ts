@@ -100,4 +100,17 @@ describe('Check box page tests', () => {
       ]),
     );
   });
+
+  test('Uncheck specific checkbox in the middle of the branch', async () => {
+    await checkBoxPage.expandAllNodes();
+    await checkBoxPage.toggleCheckbox(checkBoxNames.DESKTOP);
+    await checkBoxPage.toggleCheckbox(checkBoxNames.NOTES);
+
+    expect(
+      await checkBoxPage.isCheckboxChecked(checkBoxNames.NOTES),
+    ).toBeFalsy();
+    expect(await checkBoxPage.getSelectedResults()).toEqual(
+      expect.arrayContaining([checkBoxNames.COMMANDS]),
+    );
+  });
 });
