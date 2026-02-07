@@ -85,6 +85,15 @@ describe('Check box page tests', () => {
     );
   });
 
+  test('Uncheck main checkbox', async () => {
+    await checkBoxPage.toggleCheckbox(checkBoxNames.HOME);
+
+    expect(
+      await checkBoxPage.isCheckboxChecked(checkBoxNames.HOME),
+    ).toBeFalsy();
+    expect(await checkBoxPage.getSelectedResults()).toEqual([]);
+  });
+
   test('Check specific checkbox in the middle of the branch', async () => {
     await checkBoxPage.expandAllNodes();
     await checkBoxPage.toggleCheckbox(checkBoxNames.DESKTOP);
