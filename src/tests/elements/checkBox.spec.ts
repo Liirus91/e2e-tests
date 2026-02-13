@@ -122,4 +122,16 @@ describe('Check box page tests', () => {
       expect.arrayContaining([checkBoxNames.COMMANDS]),
     );
   });
+
+  test('Check specific checkbox at the end of the branch', async () => {
+    await checkBoxPage.expandAllNodes();
+    await checkBoxPage.toggleCheckbox(checkBoxNames.COMMANDS);
+
+    expect(
+      await checkBoxPage.isCheckboxChecked(checkBoxNames.COMMANDS),
+    ).toBeTruthy();
+    expect(await checkBoxPage.getSelectedResults()).toEqual(
+      expect.arrayContaining([checkBoxNames.COMMANDS]),
+    );
+  });
 });
