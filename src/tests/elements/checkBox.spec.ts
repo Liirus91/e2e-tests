@@ -134,4 +134,14 @@ describe('Check box page tests', () => {
       expect.arrayContaining([checkBoxNames.COMMANDS]),
     );
   });
+
+  test('Uncheck specific checkbox at the end of the branch', async () => {
+    await checkBoxPage.expandAllNodes();
+    await checkBoxPage.toggleCheckbox(checkBoxNames.COMMANDS);
+
+    expect(
+      await checkBoxPage.isCheckboxChecked(checkBoxNames.COMMANDS),
+    ).toBeFalsy();
+    expect(await checkBoxPage.getSelectedResults()).toEqual([]);
+  });
 });
