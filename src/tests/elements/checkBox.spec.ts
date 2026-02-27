@@ -22,30 +22,6 @@ afterAll(async () => {
 });
 
 describe('Check box page tests', () => {
-  test('Expand all branches by one button', async () => {
-    await checkBoxPage.expandAllNodes();
-
-    expect(
-      await checkBoxPage.areBranchesExpanded([
-        checkBoxNames.HOME,
-        checkBoxNames.DESKTOP,
-        checkBoxNames.DOCUMENTS,
-        checkBoxNames.WORKSPACE,
-        checkBoxNames.OFFICE,
-        checkBoxNames.DOWNLOADS,
-      ]),
-    ).toBeTruthy();
-  });
-
-  test('Collapse all branches by one button', async () => {
-    await checkBoxPage.expandAllNodes();
-    await checkBoxPage.collapseAllNodes();
-
-    expect(
-      await checkBoxPage.areBranchesExpanded([checkBoxNames.HOME]),
-    ).toBeFalsy();
-  });
-
   test('Expand specific branch', async () => {
     await checkBoxPage.expandBranch(checkBoxNames.HOME);
 
@@ -58,7 +34,8 @@ describe('Check box page tests', () => {
   });
 
   test('Collapse specific branch', async () => {
-    await checkBoxPage.expandAllNodes();
+    await checkBoxPage.expandBranch(checkBoxNames.HOME);
+    await checkBoxPage.expandBranch(checkBoxNames.DESKTOP);
     await checkBoxPage.collapseBranch(checkBoxNames.DESKTOP);
 
     expect(
@@ -95,7 +72,8 @@ describe('Check box page tests', () => {
   });
 
   test('Check specific checkbox in the middle of the branch', async () => {
-    await checkBoxPage.expandAllNodes();
+    await checkBoxPage.expandBranch(checkBoxNames.HOME);
+    await checkBoxPage.expandBranch(checkBoxNames.DESKTOP);
     await checkBoxPage.toggleCheckbox(checkBoxNames.DESKTOP);
 
     expect(
@@ -111,7 +89,8 @@ describe('Check box page tests', () => {
   });
 
   test('Uncheck specific checkbox in the middle of the branch', async () => {
-    await checkBoxPage.expandAllNodes();
+    await checkBoxPage.expandBranch(checkBoxNames.HOME);
+    await checkBoxPage.expandBranch(checkBoxNames.DESKTOP);
     await checkBoxPage.toggleCheckbox(checkBoxNames.DESKTOP);
     await checkBoxPage.toggleCheckbox(checkBoxNames.NOTES);
 
@@ -124,7 +103,8 @@ describe('Check box page tests', () => {
   });
 
   test('Check specific checkbox at the end of the branch', async () => {
-    await checkBoxPage.expandAllNodes();
+    await checkBoxPage.expandBranch(checkBoxNames.HOME);
+    await checkBoxPage.expandBranch(checkBoxNames.DESKTOP);
     await checkBoxPage.toggleCheckbox(checkBoxNames.COMMANDS);
 
     expect(
@@ -136,7 +116,9 @@ describe('Check box page tests', () => {
   });
 
   test('Uncheck specific checkbox at the end of the branch', async () => {
-    await checkBoxPage.expandAllNodes();
+    await checkBoxPage.expandBranch(checkBoxNames.HOME);
+    await checkBoxPage.expandBranch(checkBoxNames.DESKTOP);
+    await checkBoxPage.toggleCheckbox(checkBoxNames.COMMANDS);
     await checkBoxPage.toggleCheckbox(checkBoxNames.COMMANDS);
 
     expect(

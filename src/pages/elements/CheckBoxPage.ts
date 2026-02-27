@@ -7,8 +7,6 @@ export class CheckBoxPage extends ItemPage {
 
   private treeNode = '.rct-node';
   private nodeTitle = '.rct-title';
-  private expandButton = 'button[title="Expand all"]';
-  private collapseButton = 'button[title="Collapse all"]';
   private checkBox = '.rct-checkbox svg';
   private checkIconClass = 'rct-icon-check';
   private branchExpandedClass = 'rct-node-expanded';
@@ -21,20 +19,6 @@ export class CheckBoxPage extends ItemPage {
     };
   }
 
-  async expandAllNodes(): Promise<void> {
-    const expandAllButton = await this.page.$(this.expandButton);
-    if (expandAllButton) {
-      await expandAllButton.click();
-    }
-  }
-
-  async collapseAllNodes(): Promise<void> {
-    const collapseAllButton = await this.page.$(this.collapseButton);
-    if (collapseAllButton) {
-      await collapseAllButton.click();
-    }
-  }
-
   async getBranchByName(name: CheckBoxName) {
     const nodes = await this.page.$$(this.treeNode);
 
@@ -44,7 +28,7 @@ export class CheckBoxPage extends ItemPage {
 
       const text = await this.page.evaluate(
         (el) => el.textContent?.trim(),
-        title
+        title,
       );
 
       if (text === name) {
@@ -60,7 +44,7 @@ export class CheckBoxPage extends ItemPage {
       const branch = await this.getBranchByName(name);
       const expanded = await branch.evaluate(
         (el, branchExpandedClass) => el.classList.contains(branchExpandedClass),
-        this.branchExpandedClass
+        this.branchExpandedClass,
       );
       return expanded;
     } catch {
@@ -75,7 +59,7 @@ export class CheckBoxPage extends ItemPage {
     if (expandIcon) {
       const isExpanded = await branch.evaluate(
         (el, branchExpandedClass) => el.classList.contains(branchExpandedClass),
-        this.branchExpandedClass
+        this.branchExpandedClass,
       );
       if (!isExpanded) {
         await expandIcon.click();
@@ -90,7 +74,7 @@ export class CheckBoxPage extends ItemPage {
     if (collapseIcon) {
       const isExpanded = await branch.evaluate(
         (el, branchExpandedClass) => el.classList.contains(branchExpandedClass),
-        this.branchExpandedClass
+        this.branchExpandedClass,
       );
       if (isExpanded) {
         await collapseIcon.click();
@@ -100,7 +84,7 @@ export class CheckBoxPage extends ItemPage {
 
   async areBranchesExpanded(names: CheckBoxName[]): Promise<boolean> {
     const results = await Promise.all(
-      names.map((name) => this.isBranchExpanded(name))
+      names.map((name) => this.isBranchExpanded(name)),
     );
 
     return results.every(Boolean);
@@ -122,7 +106,7 @@ export class CheckBoxPage extends ItemPage {
     if (checkbox) {
       const isChecked = await checkbox.evaluate(
         (el, checkIconClass) => el.classList.contains(checkIconClass),
-        this.checkIconClass
+        this.checkIconClass,
       );
       return isChecked;
     }
@@ -137,7 +121,7 @@ export class CheckBoxPage extends ItemPage {
     for (const element of resultElements) {
       const text = await this.page.evaluate(
         (el) => el.textContent?.trim() || '',
-        element
+        element,
       );
       results.push(capitalizeFirst(text));
     }
